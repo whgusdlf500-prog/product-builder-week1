@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn');
-    const numbersDisplay = document.getElementById('numbers-display');
+    const menuDisplay = document.getElementById('menu-display'); // Changed from numbersDisplay
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
+
+    const menuItems = [
+        "김치찌개", "불고기", "비빔밥", "삼겹살", "된장찌개", "순두부찌개", "갈비찜", "해물파전", "떡볶이", "잡채",
+        "파스타", "스테이크", "피자", "햄버거", "리조또", "샐러드", "라자냐", "수프", "샌드위치", "오믈렛",
+        "초밥", "라멘", "돈까스", "우동", "규동", "튀김", "오코노미야끼", "타코야끼", "야끼소바", "사시미"
+    ];
 
     // Theme toggle
     themeToggle.addEventListener('click', () => {
@@ -23,43 +29,33 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggle.textContent = '🌙';
     }
 
-    // 로또 번호 생성 함수
-    function generateLottoNumbers() {
-        const numbers = new Set();
-        while (numbers.size < 6) {
-            const randomNumber = Math.floor(Math.random() * 45) + 1;
-            numbers.add(randomNumber);
-        }
-        return Array.from(numbers).sort((a, b) => a - b);
+    // 저녁 메뉴 선택 함수
+    function selectDinnerMenu() {
+        const randomIndex = Math.floor(Math.random() * menuItems.length);
+        return menuItems[randomIndex];
     }
 
-    // 번호를 화면에 표시하는 함수
-    function displayNumbers(numbers) {
-        numbersDisplay.innerHTML = ''; // 이전 번호 삭제
-        numbers.forEach((number, index) => {
-            // 순차적으로 공이 나타나는 애니메이션 효과
-            setTimeout(() => {
-                const ball = createBall(number);
-                numbersDisplay.appendChild(ball);
-            }, index * 200);
-        });
+    // 메뉴를 화면에 표시하는 함수
+    function displayMenu(menu) {
+        menuDisplay.innerHTML = ''; // 이전 메뉴 삭제
+        const menuItemElement = createMenuItemElement(menu);
+        menuDisplay.appendChild(menuItemElement);
     }
 
-    // 로또 공 DOM 요소 생성 함수
-    function createBall(number) {
-        const ball = document.createElement('div');
-        ball.className = 'ball';
-        ball.textContent = number;
-        ball.dataset.number = number; // 숫자에 따라 다른 스타일을 적용하기 위한 데이터 속성
-        return ball;
+    // 메뉴 항목 DOM 요소 생성 함수
+    function createMenuItemElement(item) {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'menu-item'; // Changed from 'ball'
+        itemElement.textContent = item;
+        return itemElement;
     }
 
     // 버튼 클릭 이벤트
     generateBtn.addEventListener('click', () => {
-        const lottoNumbers = generateLottoNumbers();
-        displayNumbers(lottoNumbers);
+        const selectedMenu = selectDinnerMenu();
+        displayMenu(selectedMenu);
     });
 
-    // 초기 로딩 시에도 번호를 한 번 생성하여 보여주기
-    displayNumbers(generateLottoNumbers());
+    // 초기 로딩 시에도 메뉴를 한 번 선택하여 보여주기
+    displayMenu(selectDinnerMenu());
 });

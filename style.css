@@ -71,35 +71,44 @@ body.light-mode .theme-btn {
 }
 
 
-/* Lotto Numbers Container */
-.lotto-numbers-container {
+/* Menu Display Container */
+.menu-display { /* Changed from .lotto-numbers-container */
     display: flex;
     justify-content: center;
-    gap: 15px;
+    align-items: center; /* Center item vertically */
     margin-bottom: 40px;
-    flex-wrap: wrap;
     min-height: 60px; /* Prevent layout shift */
+    font-size: 2rem; /* Larger font for menu item */
+    font-weight: bold;
+    color: #4CAF50; /* Match header H1 */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
-/* Lotto Ball */
-.lotto-ball {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    font-weight: bold;
+body.light-mode .menu-display {
+    color: #388E3C; /* Darker green for light mode */
+}
+
+
+/* Menu Item */
+.menu-item { /* Changed from .lotto-ball */
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #4CAF50, #45a049); /* Green background */
     color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0,0,0,0.4);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-origin: center;
+    white-space: nowrap; /* Prevent menu item text from wrapping */
 }
 
+body.light-mode .menu-item {
+    background: linear-gradient(145deg, #8BC34A, #689F38);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), inset 0 -3px 5px rgba(255,255,255,0.4);
+}
+
+
 /* Generate Button */
-.generate-button {
+.generate-btn { /* Changed class name to match HTML */
     background: linear-gradient(145deg, #4CAF50, #45a049);
     color: white;
     font-size: 1.2rem;
@@ -112,12 +121,12 @@ body.light-mode .theme-btn {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.generate-button:hover {
+.generate-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
 }
 
-.generate-button:active {
+.generate-btn:active {
     transform: translateY(1px);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
@@ -155,13 +164,15 @@ body.light-mode footer {
         font-size: 2rem;
     }
 
-    .lotto-ball {
-        width: 45px;
-        height: 45px;
-        font-size: 1.3rem;
+    .menu-display {
+        font-size: 1.8rem;
     }
 
-    .generate-button {
+    .menu-item {
+        padding: 8px 15px;
+    }
+
+    .generate-btn {
         padding: 12px 25px;
         font-size: 1.1rem;
     }
