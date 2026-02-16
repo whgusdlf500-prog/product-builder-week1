@@ -25,7 +25,7 @@ body.light-mode {
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 body.light-mode .container {
@@ -36,7 +36,13 @@ body.light-mode .container {
 /* Header */
 header {
     position: relative;
-    margin-bottom: 30px; /* Adjusted for tabs */
+    margin-bottom: 30px; /* Space before tabs */
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333;
+}
+
+body.light-mode header {
+    border-bottom: 1px solid #ccc;
 }
 
 header h1 {
@@ -44,10 +50,11 @@ header h1 {
     font-size: 2.5rem;
     font-weight: 700;
     color: #4CAF50; /* A vibrant green */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 header p {
-    margin: 0 0 30px;
+    margin: 0 0 20px;
     font-size: 1.1rem;
     color: #aaa;
 }
@@ -56,20 +63,64 @@ body.light-mode header p {
     color: #666;
 }
 
-.theme-btn {
+.controls {
+    display: flex;
+    justify-content: flex-end; /* Align controls to the right */
+    align-items: center;
+    gap: 15px;
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+.theme-btn {
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
     color: #ffffff;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 body.light-mode .theme-btn {
     color: #333;
 }
+
+.theme-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.light-mode .theme-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#language-switcher {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    appearance: none; /* Remove default dropdown arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    padding-right: 30px; /* Make space for custom arrow */
+}
+
+body.light-mode #language-switcher {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333333'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
 
 /* Tabs */
 #tabs {
@@ -78,44 +129,54 @@ body.light-mode .theme-btn {
     margin-bottom: 30px;
     border-bottom: 1px solid #333;
     width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
 }
 
 body.light-mode #tabs {
     border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .tab-button {
-    background: none;
+    background: #2a2a2a;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     font-size: 1.1rem;
     cursor: pointer;
     color: #aaa;
     border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
+    flex-grow: 1; /* Distribute space evenly */
+    border-radius: 5px 5px 0 0;
 }
 
 body.light-mode .tab-button {
+    background: #e0e0e0;
     color: #666;
 }
 
 .tab-button:hover:not(.active) {
     color: #4CAF50;
+    background-color: #3a3a3a;
 }
 
 body.light-mode .tab-button:hover:not(.active) {
     color: #388E3C;
+    background-color: #d0d0d0;
 }
 
 .tab-button.active {
     color: #4CAF50;
     border-bottom: 3px solid #4CAF50;
     font-weight: bold;
+    background: #1e1e1e; /* Match container background */
 }
 
 body.light-mode .tab-button.active {
     color: #388E3C;
     border-bottom: 3px solid #388E3C;
+    background: #ffffff; /* Match container background */
 }
 
 /* Tab Content */
@@ -123,6 +184,7 @@ body.light-mode .tab-button.active {
     display: none;
     width: 100%;
     padding-top: 20px;
+    animation: fadeIn 0.5s ease-out;
 }
 
 .tab-content.active {
@@ -134,6 +196,7 @@ body.light-mode .tab-button.active {
     color: #4CAF50;
     margin-bottom: 15px;
     text-align: center;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 body.light-mode .tab-content h2 {
@@ -142,7 +205,7 @@ body.light-mode .tab-content h2 {
 
 /* Menu Selector Specific Styles */
 #menu-selector {
-    margin-bottom: 30px; /* Space above generate button */
+    margin-bottom: 30px;
 }
 
 .menu-display {
@@ -150,33 +213,30 @@ body.light-mode .tab-content h2 {
     justify-content: center;
     align-items: center;
     margin-bottom: 40px;
-    min-height: 60px;
-    font-size: 2rem;
+    min-height: 80px; /* Increased height for better display */
+    font-size: 2.5rem; /* Larger font */
     font-weight: bold;
-    color: #4CAF50;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    color: #fff; /* White text for spinning effect */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    background: #333; /* Darker background for menu display */
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden; /* Hide overflowing text during spin */
 }
 
 body.light-mode .menu-display {
-    color: #388E3C;
+    background: #ddd;
+    color: #333;
+    text-shadow: none;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .menu-item {
-    padding: 10px 20px;
-    border-radius: 10px;
-    background: linear-gradient(145deg, #4CAF50, #45a049);
-    color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0,0,0,0.4);
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transform-origin: center;
-    white-space: nowrap;
+    animation: menuSpin 0.1s linear infinite; /* Animation for spinning effect */
 }
 
-body.light-mode .menu-item {
-    background: linear-gradient(145deg, #8BC34A, #689F38);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), inset 0 -3px 5px rgba(255,255,255,0.4);
-}
-
+/* Generate Button (now menu-toggle-btn) */
 .generate-btn {
     background: linear-gradient(145deg, #4CAF50, #45a049);
     color: white;
@@ -374,6 +434,25 @@ body.light-mode #gender-prediction {
     margin-top: 10px;
 }
 
+/* Disqus Section */
+#disqus-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #333; /* Separator */
+    text-align: left; /* Align Disqus content to left within its section */
+}
+
+body.light-mode #disqus-section {
+    border-top: 1px solid #ccc;
+}
+
+#disqus-section h2 {
+    font-size: 2rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+    text-align: center; /* Center the heading */
+}
+
 
 /* Footer */
 footer {
@@ -384,6 +463,18 @@ footer {
 
 body.light-mode footer {
     color: #999;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes menuSpin {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(-10px); opacity: 0.5; }
+    100% { transform: translateY(0); opacity: 1; }
 }
 
 /* Responsive Design */

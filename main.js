@@ -7,21 +7,161 @@ const genericImages = {
     "여성": "https://via.placeholder.com/200/FFC0CB/000000?text=Generic+Female" // Pink placeholder
 };
 
-// Dinner menu items for the Menu Selector tab
-const menuItems = [
+// --- Translations ---
+const translations = {
+    "ko": {
+        "site_title": "다기능 사이트",
+        "main_title": "다기능 사이트",
+        "main_description": "다양한 기능을 한 곳에서 만나보세요!",
+        "lang_ko": "한국어",
+        "lang_en": "English",
+        "tab_menu": "저녁 메뉴",
+        "tab_contact": "제휴 문의",
+        "tab_ml": "닮은꼴 찾기",
+        "menu_title": "오늘 뭐 먹지?",
+        "menu_prompt": "메뉴를 돌려보세요!",
+        "btn_start": "시작",
+        "btn_stop": "정지",
+        "comments_title": "댓글",
+        "noscript_disqus": "JavaScript를 활성화하면 Disqus 기반 댓글을 볼 수 있습니다.",
+        "contact_title": "제휴 문의",
+        "contact_description": "제휴 관련 문의사항이 있으시면 아래 양식을 작성해주세요.",
+        "form_name": "이름:",
+        "form_email": "이메일:",
+        "form_subject": "제목:",
+        "form_message": "문의 내용:",
+        "btn_contact_submit": "문의하기",
+        "ml_title": "닮은꼴 찾기",
+        "ml_description": "사진을 찍으면 가장 닮은 성별의 대표 이미지를 보여드립니다.",
+        "btn_camera_start": "카메라 시작",
+        "ml_result_label": "분류 결과:",
+        "ml_predicting": "분류 중...",
+        "ml_no_image": "대표 이미지를 찾을 수 없습니다.",
+        "footer_text": "&copy; 2026 행운을 빌어요!",
+        "placeholder_name": "이름을 입력하세요",
+        "placeholder_email": "이메일 주소를 입력하세요",
+        "placeholder_subject": "문의 제목을 입력하세요",
+        "placeholder_message": "문의 내용을 입력하세요"
+    },
+    "en": {
+        "site_title": "Multi-functional Site",
+        "main_title": "Multi-functional Site",
+        "main_description": "Discover various features in one place!",
+        "lang_ko": "Korean",
+        "lang_en": "English",
+        "tab_menu": "Dinner Menu",
+        "tab_contact": "Partnership Inquiry",
+        "tab_ml": "Find Your Look-alike",
+        "menu_title": "What's for Dinner?",
+        "menu_prompt": "Spin for your menu!",
+        "btn_start": "Start",
+        "btn_stop": "Stop",
+        "comments_title": "Comments",
+        "noscript_disqus": "Please enable JavaScript to view the comments powered by Disqus.",
+        "contact_title": "Partnership Inquiry",
+        "contact_description": "If you have any partnership inquiries, please fill out the form below.",
+        "form_name": "Name:",
+        "form_email": "Email:",
+        "form_subject": "Subject:",
+        "form_message": "Message:",
+        "btn_contact_submit": "Submit Inquiry",
+        "ml_title": "Find Your Look-alike",
+        "ml_description": "Take a photo and we'll show you a generic image of the most similar gender.",
+        "btn_camera_start": "Start Camera",
+        "ml_result_label": "Classification Result:",
+        "ml_predicting": "Classifying...",
+        "ml_no_image": "Generic image not found.",
+        "footer_text": "&copy; 2026 Good luck!",
+        "placeholder_name": "Enter your name",
+        "placeholder_email": "Enter your email address",
+        "placeholder_subject": "Enter inquiry subject",
+        "placeholder_message": "Enter your message"
+    }
+};
+
+// Dinner menu items for the Menu Selector tab (will be translated by setLanguage)
+const menuItems_ko = [
     "김치찌개", "불고기", "비빔밥", "삼겹살", "된장찌개", "순두부찌개", "갈비찜", "해물파전", "떡볶이", "잡채",
     "파스타", "스테이크", "피자", "햄버거", "리조또", "샐러드", "라자냐", "수프", "샌드위치", "오믈렛",
     "초밥", "라멘", "돈까스", "우동", "규동", "튀김", "오코노미야끼", "타코야끼", "야끼소바", "사시미"
 ];
 
-let tabInitialized = {
-    'tab-content-menu': false,
-    'tab-content-contact': false,
-    'tab-content-teachable-machine': false
-};
+const menuItems_en = [
+    "Kimchi Stew", "Bulgogi", "Bibimbap", "Samgyeopsal", "Doenjang Stew", "Soft Tofu Stew", "Braised Short Ribs", "Seafood Pancake", "Tteokbokki", "Japchae",
+    "Pasta", "Steak", "Pizza", "Hamburger", "Risotto", "Salad", "Lasagna", "Soup", "Sandwich", "Omelet",
+    "Sushi", "Ramen", "Donkatsu", "Udon", "Gyudon", "Tempura", "Okonomiyaki", "Takoyaki", "Yakisoba", "Sashimi"
+];
+
+let currentMenuItems = menuItems_ko; // Initially set to Korean
+
+let currentActiveTab = 'tab-content-menu'; // Keep track of the currently active tab
+
+// Function to stop the webcam when switching tabs
+function stopWebcam() {
+    if (webcam && webcam.stream && webcam.stream.active) {
+        webcam.stop();
+        const webcamContainer = document.getElementById("webcam-container");
+        if (webcamContainer) {
+            webcamContainer.innerHTML = ''; // Clear webcam canvas
+        }
+        const labelContainer = document.getElementById("label-container");
+        if (labelContainer) {
+            labelContainer.innerHTML = ''; // Clear labels
+        }
+        const genderPredictionElement = document.getElementById("gender-prediction");
+        if (genderPredictionElement) {
+            genderPredictionElement.innerHTML = '';
+        }
+        const genericImageDisplayElement = document.getElementById("generic-image-display");
+        if (genericImageDisplayElement) {
+            genericImageDisplayElement.innerHTML = '';
+        }
+    }
+}
+
+// Function to apply translations
+function setLanguage(lang) {
+    document.querySelectorAll('[data-key]').forEach(element => {
+        const key = element.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+            if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
+                element.placeholder = translations[lang][`placeholder_${key.split('_')[1]}`]; // Handle placeholders
+            } else if (element.tagName === 'TEXTAREA' && element.hasAttribute('placeholder')) {
+                element.placeholder = translations[lang][`placeholder_${key.split('_')[1]}`];
+            } else {
+                element.textContent = translations[lang][key];
+            }
+        }
+    });
+
+    // Update specific hardcoded texts
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
+    if (menuToggleBtn) {
+        if (isSpinning) {
+            menuToggleBtn.textContent = translations[lang]['btn_stop'];
+        } else {
+            menuToggleBtn.textContent = translations[lang]['btn_start'];
+        }
+    }
+
+    // Update current menu items array
+    currentMenuItems = (lang === 'ko') ? menuItems_ko : menuItems_en;
+
+    // Refresh menu display if on menu tab
+    if (currentActiveTab === 'tab-content-menu') {
+        initMenuSelector(); // Re-initialize to update menu item text
+    }
+
+    localStorage.setItem('language', lang); // Save preference
+}
 
 // Function to switch tabs
 function showTab(tabId) {
+    // Stop webcam if switching away from Teachable Machine tab
+    if (currentActiveTab === 'tab-content-teachable-machine' && tabId !== 'tab-content-teachable-machine') {
+        stopWebcam();
+    }
+
     // Hide all tab content
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
@@ -36,21 +176,26 @@ function showTab(tabId) {
     // Activate the clicked tab button
     document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
 
-    // Initialize tab content if not already initialized
-    if (!tabInitialized[tabId]) {
-        if (tabId === 'tab-content-menu') {
-            initMenuSelector();
-        } else if (tabId === 'tab-content-teachable-machine') {
-            // Teachable Machine init should be triggered by its own "Start" button for webcam access
-            // initTeachableMachine(); // Do not auto-start webcam
-        }
-        tabInitialized[tabId] = true;
+    currentActiveTab = tabId; // Update current active tab
+
+    // Initialize tab content based on tabId
+    if (tabId === 'tab-content-menu') {
+        initMenuSelector();
+    } else if (tabId === 'tab-content-contact') {
+        // No specific JS init needed for contact form, but ensure placeholders are translated
+        setLanguage(localStorage.getItem('language') || 'ko');
+    } else if (tabId === 'tab-content-teachable-machine') {
+        // Teachable Machine init should be triggered by its own "Start" button for webcam access
+        // initTeachableMachine(); // Do not auto-start webcam
     }
 }
 
 
 // --- Teachable Machine Logic ---
 async function initTeachableMachine() {
+    // Stop any existing webcam instance before starting a new one
+    stopWebcam();
+
     const modelURL = TM_URL + "model.json";
     const metadataURL = TM_URL + "metadata.json";
 
@@ -66,25 +211,38 @@ async function initTeachableMachine() {
     window.requestAnimationFrame(loop);
 
     // append elements to the DOM
-    document.getElementById("webcam-container").innerHTML = ''; // Clear previous content if any
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
+    const webcamContainer = document.getElementById("webcam-container");
+    if (webcamContainer) {
+        webcamContainer.innerHTML = ''; // Clear previous content if any
+        webcamContainer.appendChild(webcam.canvas);
+    }
+
     labelContainer = document.getElementById("label-container");
-    labelContainer.innerHTML = ''; // Clear previous content
-    for (let i = 0; i < maxPredictions; i++) { // and class labels
-        labelContainer.appendChild(document.createElement("div"));
+    if (labelContainer) {
+        labelContainer.innerHTML = ''; // Clear previous content
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
     }
 }
 
 async function loop() {
-    if (webcam && webcam.canvas) { // Ensure webcam is initialized and playing
+    if (webcam && webcam.canvas && webcam.stream && webcam.stream.active) { // Ensure webcam is initialized and playing
         webcam.update(); // update the webcam frame
         await predict();
         window.requestAnimationFrame(loop);
+    } else {
+        // If webcam is stopped, clear prediction results
+        const genderPredictionElement = document.getElementById("gender-prediction");
+        if (genderPredictionElement) genderPredictionElement.innerHTML = '';
+        const genericImageDisplayElement = document.getElementById("generic-image-display");
+        if (genericImageDisplayElement) genericImageDisplayElement.innerHTML = '';
+        if (labelContainer) labelContainer.innerHTML = '';
     }
 }
 
 async function predict() {
-    if (!model || !webcam || !webcam.canvas) return; // Ensure model and webcam are ready
+    if (!model || !webcam || !webcam.canvas || !webcam.stream || !webcam.stream.active) return; // Ensure model and webcam are ready and active
 
     // predict can take in an image, video or canvas html element
     const prediction = await model.predict(webcam.canvas);
@@ -109,36 +267,27 @@ async function predict() {
     const genericImageDisplayElement = document.getElementById("generic-image-display");
 
     if (highestProbability > 0.7) { // Only show prediction if confidence is high enough
-        genderPredictionElement.innerHTML = `가장 높은 확률: ${predictedClass}`;
+        genderPredictionElement.innerHTML = `${translations[localStorage.getItem('language') || 'ko']['ml_result_label']} ${predictedClass}`;
         const imageUrl = genericImages[predictedClass];
         if (imageUrl) {
             genericImageDisplayElement.innerHTML = `<img src="${imageUrl}" alt="${predictedClass} 대표 이미지">`;
         } else {
-            genericImageDisplayElement.innerHTML = `<p>대표 이미지를 찾을 수 없습니다.</p>`;
+            genericImageDisplayElement.innerHTML = `<p>${translations[localStorage.getItem('language') || 'ko']['ml_no_image']}</p>`;
         }
     } else {
-        genderPredictionElement.innerHTML = "분류 중...";
+        genderPredictionElement.innerHTML = translations[localStorage.getItem('language') || 'ko']['ml_predicting'];
         genericImageDisplayElement.innerHTML = "";
     }
 }
 
 // --- Dinner Menu Selector Logic ---
+let isSpinning = false;
+let spinInterval = null;
+let currentMenuItemElement = null; // To hold the currently displayed menu item element
+
 function initMenuSelector() {
-    const generateBtn = document.getElementById('generate-btn');
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
     const menuDisplay = document.getElementById('menu-display');
-
-    // 저녁 메뉴 선택 함수
-    function selectDinnerMenu() {
-        const randomIndex = Math.floor(Math.random() * menuItems.length);
-        return menuItems[randomIndex];
-    }
-
-    // 메뉴를 화면에 표시하는 함수
-    function displayMenu(menu) {
-        menuDisplay.innerHTML = ''; // 이전 메뉴 삭제
-        const menuItemElement = createMenuItemElement(menu);
-        menuDisplay.appendChild(menuItemElement);
-    }
 
     // 메뉴 항목 DOM 요소 생성 함수
     function createMenuItemElement(item) {
@@ -148,17 +297,41 @@ function initMenuSelector() {
         return itemElement;
     }
 
-    // 버튼 클릭 이벤트
-    if (generateBtn) { // Ensure button exists before adding listener
-        generateBtn.addEventListener('click', () => {
-            const selectedMenu = selectDinnerMenu();
-            displayMenu(selectedMenu);
-        });
+    // 메뉴 회전 시작/정지 로직
+    if (menuToggleBtn) {
+        menuToggleBtn.onclick = () => {
+            if (isSpinning) {
+                // Stop spinning
+                clearInterval(spinInterval);
+                isSpinning = false;
+                menuToggleBtn.textContent = translations[localStorage.getItem('language') || 'ko']['btn_start'];
+                // Display the final selected item more clearly
+                if (currentMenuItemElement) {
+                    menuDisplay.innerHTML = '';
+                    menuDisplay.appendChild(currentMenuItemElement);
+                }
+            } else {
+                // Start spinning
+                isSpinning = true;
+                menuToggleBtn.textContent = translations[localStorage.getItem('language') || 'ko']['btn_stop'];
+                spinInterval = setInterval(() => {
+                    const randomIndex = Math.floor(Math.random() * currentMenuItems.length); // Use currentMenuItems
+                    const randomMenuItem = currentMenuItems[randomIndex];
+                    menuDisplay.innerHTML = '';
+                    currentMenuItemElement = createMenuItemElement(randomMenuItem);
+                    menuDisplay.appendChild(currentMenuItemElement);
+                }, 100); // Change item every 100ms for spinning effect
+            }
+        };
     }
 
-    // 초기 로딩 시에도 메뉴를 한 번 선택하여 보여주기
-    if (menuDisplay) { // Ensure display element exists
-        displayMenu(selectDinnerMenu());
+    // 초기 로딩 시 메뉴를 한 번 선택하여 보여주기 (옵션)
+    if (menuDisplay && menuDisplay.innerHTML === translations[localStorage.getItem('language') || 'ko']['menu_prompt']) {
+        const randomIndex = Math.floor(Math.random() * currentMenuItems.length); // Use currentMenuItems
+        const randomMenuItem = currentMenuItems[randomIndex];
+        menuDisplay.innerHTML = '';
+        currentMenuItemElement = createMenuItemElement(randomMenuItem);
+        menuDisplay.appendChild(currentMenuItemElement);
     }
 }
 
@@ -168,6 +341,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Theme toggle logic
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
+    const languageSwitcher = document.getElementById('language-switcher');
+
+    // Load saved language or default to Korean
+    const savedLanguage = localStorage.getItem('language') || 'ko';
+    if (languageSwitcher) {
+        languageSwitcher.value = savedLanguage;
+        languageSwitcher.addEventListener('change', (event) => {
+            setLanguage(event.target.value);
+        });
+    }
+    setLanguage(savedLanguage); // Apply initial language
 
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
@@ -190,7 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
             themeToggle.textContent = '☀️';
         }
     }
-
 
     // Initialize the default tab
     showTab('tab-content-menu');
