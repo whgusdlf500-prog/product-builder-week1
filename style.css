@@ -119,6 +119,7 @@ body.light-mode .menu-item {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px; /* Add margin below the button */
 }
 
 .generate-btn:hover {
@@ -128,6 +129,104 @@ body.light-mode .menu-item {
 
 .generate-btn:active {
     transform: translateY(1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Contact Form Section */
+#contact-form-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #333; /* Separator */
+}
+
+body.light-mode #contact-form-section {
+    border-top: 1px solid #ccc;
+}
+
+#contact-form-section h2 {
+    font-size: 2rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+#contact-form-section p {
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+body.light-mode #contact-form-section p {
+    color: #666;
+}
+
+#contact-form-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #eee;
+}
+
+body.light-mode .form-group label {
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+body.light-mode .form-group input,
+body.light-mode .form-group textarea {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+}
+
+.submit-btn {
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    align-self: center; /* Center the button */
+    margin-top: 20px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0px);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -175,5 +274,14 @@ body.light-mode footer {
     .generate-btn {
         padding: 12px 25px;
         font-size: 1.1rem;
+    }
+
+    #contact-form-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .submit-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
     }
 }
