@@ -23,12 +23,20 @@
         </header>
         <main>
             <div id="tabs">
-                <button class="tab-button active" onclick="showTab('tab-content-menu')" data-key="tab_menu">저녁 메뉴</button>
+                <button class="tab-button active" onclick="showTab('tab-content-intro')" data-key="tab_intro">사이트 소개</button>
+                <button class="tab-button" onclick="showTab('tab-content-menu')" data-key="tab_menu">저녁 메뉴</button>
                 <button class="tab-button" onclick="showTab('tab-content-contact')" data-key="tab_contact">제휴 문의</button>
                 <button class="tab-button" onclick="showTab('tab-content-teachable-machine')" data-key="tab_ml">닮은꼴 찾기</button>
             </div>
 
-            <div id="tab-content-menu" class="tab-content active">
+            <div id="tab-content-intro" class="tab-content active">
+                <h2 data-key="intro_title">사이트 소개</h2>
+                <p data-key="intro_p1">환영합니다! 이 사이트는 다양한 편의 기능을 한곳에 모아 사용자님의 일상에 작은 즐거움과 도움을 드리고자 만들어졌습니다.</p>
+                <p data-key="intro_p2">저녁 식사 메뉴를 고민할 때, 새로운 파트너십을 제안하고 싶을 때, 혹은 인공지능을 활용한 재미있는 경험을 원할 때, 언제든지 저희 사이트를 방문해주세요.</p>
+                <p data-key="intro_p3">저희는 사용자님의 피드백을 소중히 여기며, 지속적으로 기능을 개선하고 새로운 재미를 제공하기 위해 노력하겠습니다. 많은 관심 부탁드립니다!</p>
+            </div>
+
+            <div id="tab-content-menu" class="tab-content">
                 <h2 data-key="menu_title">오늘 뭐 먹지?</h2>
                 <div id="menu-selector">
                     <div class="machine-display">

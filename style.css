@@ -203,6 +203,20 @@ body.light-mode .tab-content h2 {
     color: #388E3C;
 }
 
+/* Site Intro Specific Styles */
+#tab-content-intro p {
+    font-size: 1.0rem;
+    line-height: 1.6;
+    color: #ddd;
+    margin-bottom: 15px;
+    text-align: justify; /* Justify text for better readability */
+}
+
+body.light-mode #tab-content-intro p {
+    color: #444;
+}
+
+
 /* Menu Selector Specific Styles */
 #menu-selector {
     margin-bottom: 30px;
