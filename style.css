@@ -230,6 +230,25 @@ body.light-mode .form-group textarea {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* Disqus Section */
+#disqus-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #333; /* Separator */
+    text-align: left; /* Align Disqus content to left within its section */
+}
+
+body.light-mode #disqus-section {
+    border-top: 1px solid #ccc;
+}
+
+#disqus-section h2 {
+    font-size: 2rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+    text-align: center; /* Center the heading */
+}
+
 /* Footer */
 footer {
     margin-top: 30px;
@@ -276,7 +295,8 @@ body.light-mode footer {
         font-size: 1.1rem;
     }
 
-    #contact-form-section h2 {
+    #contact-form-section h2,
+    #disqus-section h2 {
         font-size: 1.8rem;
     }
 
