@@ -10,6 +10,12 @@ body {
     align-items: center;
     min-height: 100vh;
     text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.light-mode {
+    background-color: #f0f0f0;
+    color: #333;
 }
 
 .container {
@@ -19,9 +25,19 @@ body {
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s;
+}
+
+body.light-mode .container {
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* Header */
+header {
+    position: relative;
+}
+
 header h1 {
     margin: 0 0 10px;
     font-size: 2.5rem;
@@ -34,6 +50,26 @@ header p {
     font-size: 1.1rem;
     color: #aaa;
 }
+
+body.light-mode header p {
+    color: #666;
+}
+
+.theme-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+body.light-mode .theme-btn {
+    color: #333;
+}
+
 
 /* Lotto Numbers Container */
 .lotto-numbers-container {
@@ -91,6 +127,10 @@ footer {
     margin-top: 30px;
     font-size: 0.9rem;
     color: #666;
+}
+
+body.light-mode footer {
+    color: #999;
 }
 
 /* Animation */
